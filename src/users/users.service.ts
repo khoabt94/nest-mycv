@@ -7,37 +7,32 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class UsersService {
     constructor(@InjectRepository(User) private repo: Repository<User>) { }
 
-    create(email: string, password: string) {
+    async create(email: string, password: string) {
         const user = this.repo.create({ email, password })
-        return this.repo.save(user)
+        return await this.repo.save(user)
     }
 
     async find(email: string) {
         return await this.repo.find({ where: { email } })
     }
 
-    async findOne(id: string) {
+    async findOne(id: string | null) {
+        if (!id) return null
         const findUser = await this.repo.findOneBy({ id })
         if (!findUser) {
-            return new NotFoundException('User not found!')
+            throw new NotFoundException('User not found!')
         }
         return findUser
     }
 
     async update(id: string, data: Partial<User>) {
-        const findUser = await this.repo.findOneBy({ id })
-        if (!findUser) {
-            return new NotFoundException('User not found!')
-        }
+        const findUser = await this.findOne(id)
         Object.assign(findUser, data)
         this.repo.save(findUser)
     }
 
     async remove(id: string) {
-        const findUser = await this.repo.findOneBy({ id })
-        if (!findUser) {
-            return new NotFoundException('User not found!')
-        }
+        const findUser = await this.findOne(id)
         this.repo.remove(findUser)
     }
 }
