@@ -13,6 +13,7 @@ import { CurrentUserInterceptor } from './interceptors/current-user.interceptor'
     ])
   ],
   controllers: [UsersController],
-  providers: [UsersService, AuthService, CurrentUserInterceptor]
+  providers: [UsersService, AuthService, CurrentUserInterceptor],
+  exports: [UsersService]
 })
 export class UsersModule { }

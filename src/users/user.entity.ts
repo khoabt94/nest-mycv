@@ -1,5 +1,5 @@
-import { Exclude } from "class-transformer"
-import { AfterInsert, AfterUpdate, AfterRemove, Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { Report } from "src/reports/report.entity"
+import { AfterInsert, AfterUpdate, AfterRemove, Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm"
 
 @Entity()
 export class User {
@@ -26,4 +26,7 @@ export class User {
     logRemove() {
         console.log(`Deleted user with id ${this.id}`)
     }
+
+    @OneToMany(() => Report, (report) => report.user)
+    reports: Report[]
 }
