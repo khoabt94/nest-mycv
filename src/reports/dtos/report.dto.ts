@@ -1,8 +1,13 @@
 import { Expose, Transform } from "class-transformer"
+import { User } from "src/users/user.entity"
+import { JoinColumn } from "typeorm"
 
 export class ReportDto {
   @Expose()
-  id: string
+  id: number
+
+  @Expose()
+  approved: boolean
 
   @Expose()
   price: number
